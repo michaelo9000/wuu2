@@ -81,13 +81,14 @@ export default function App() {
       <View style={styles.app}>
         <Nav setPage={setPage} />
         {page == 'requests' &&
-          <Requests sentRequests={firebaseArrayConvert(sentRequests)} receivedRequests={firebaseArrayConvert(receivedRequests)} takePhotos={takePhotos} viewPhotos={viewPhotos} user={authUser} />
+          <Requests sentRequests={firebaseArrayConvert(sentRequests)} receivedRequests={firebaseArrayConvert(receivedRequests)}
+            takePhotos={takePhotos} viewPhotos={viewPhotos} user={authUser} />
         }
         {page == 'mates' &&
           <Mates mates={firebaseArrayConvert(mates)} user={authUser} />
         }
         {page == 'take' &&
-          <Take request={requestTaking} user={authUser} />
+          <Take request={requestTaking} user={authUser} setPage={setPage} />
         }
         {page == 'view' &&
           <View style={styles.page}>

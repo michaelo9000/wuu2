@@ -13,20 +13,31 @@ const fill = {
     right: 0
 }
 
+const input = {
+    width: width * .8,
+    height: 35,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    borderRadius: 2
+}
+
 export const styles = {
+    app: {
+        ...flexCenter,
+        ...fill,
+        backgroundColor: '#eee'
+    },
     page: {
         ...flexCenter,
         ...fill,
         bottom: navHeight,
     },
-    app: {
-        ...flexCenter,
-        ...fill,
-    },
     input: {
-        width: width,
-        maxWidth: '100%',
-        marginBottom: 10
+        ...input
+    },
+    textInput: {
+        ...input,
+        padding: 9
     },
     nav: {
         position: 'absolute',
@@ -45,11 +56,15 @@ export const styles = {
         backgroundColor: 'lightblue'
     },
     receivedRequest: {
+        ...input,
+        ...flexCenter,
         backgroundColor: 'pink',
-        marginBottom: 10
+        height: 50
     },
     sentRequest: {
-        marginBottom: 10
+        ...input,
+        ...flexCenter,
+        height: 50
     },
     requestPending: {
         backgroundColor: 'salmon',

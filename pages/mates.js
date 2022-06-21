@@ -40,19 +40,34 @@ export default function Mates(props) {
   return (
     <View style={styles.page}>
       <Text>MATES</Text>
-      {props.mates.map(mate => {
-        return <View key={mate.userId}>
-          <Text>{mate.email}</Text>
-          <Button title="wuu2?" onPress={() => sendRequest(mate)} />
-        </View>
-      })}
+      {props.mates.map(mate => <MateDisplay key={mate.userId} mate={mate} handleSend={sendRequest} />)}
       <Text>FIND</Text>
-      <TextInput onChangeText={handleSearch} placeholder="start typing your mate's email" />
+      <TextInput style={styles.textInput} onChangeText={handleSearch} placeholder="start typing your mate's email" />
       {searchResults.map(r => <View key={r.key}>
-        <Text>{r.email}</Text>
-        <Button title="add" onPress={() => addMate(r.userId)} />
+        <Text >{r.email}</Text>
+        <View style={styles.input} >
+          <Button title="add" onPress={() => addMate(r.userId)} />
+        </View>
       </View>
       )}
     </View>
   );
+}
+
+function MateDisplay(props) {
+  const [sent, setSent] = useState();
+
+  const mate = props.mate;
+
+  const handleSend = function () {
+    setSent(true);
+    props.handleSend(mate);
+  }
+
+  return <View>
+    <Text>{mate.email}</Text>
+    <View style={styles.input} >
+      <Button title={sent ? 'sent' : 'wuu2?'} disabled={sent} onPress={handleSend} />
+    </View>
+  </View>
 }

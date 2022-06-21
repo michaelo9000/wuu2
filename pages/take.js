@@ -12,6 +12,7 @@ export default function Take(props) {
     const [takingPhoto, setTakingPhoto] = useState(false);
     const [frontPhoto, setFrontPhoto] = useState({});
     const [backPhoto, setBackPhoto] = useState({});
+    const [sent, setSent] = useState();
     const { height, width } = useWindowDimensions();
 
     useEffect(() => {
@@ -67,6 +68,8 @@ export default function Take(props) {
     const sendPhotos = async () => {
         var urls = await uploadPhotos(frontPhoto.uri, backPhoto.uri, props.user.key, props.request.key);
         updateObject('requests', { ...props.request, frontUrl: urls.front, backUrl: urls.back });
+        setSent(true);
+        setTimeout(() => props.setPage('requests'), 1500);
     }
 
     return (
@@ -91,13 +94,15 @@ export default function Take(props) {
                 />
             }
             {frontPhoto.uri && backPhoto.uri &&
-                <View >
-                    <Button onPress={sendPhotos} title="send" disabled={takingPhoto} />
+                <View style={styles.input} >
+                    <Button onPress={sendPhotos} title={sent ? 'sent!' : 'send'} disabled={takingPhoto || sent} />
                 </View>
             }
-            <View>
-                <Button onPress={takePhotos} title="take photos" disabled={!cameraReady || takingPhoto} />
-            </View>
+            {!backPhoto.uri &&
+                <View style={styles.input} >
+                    <Button onPress={takePhotos} title="take photos" disabled={!cameraReady || takingPhoto} />
+                </View>
+            }
         </View>
     );
 }

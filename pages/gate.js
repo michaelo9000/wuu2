@@ -22,11 +22,11 @@ export default function Gate(props) {
   }
 
   const handleCreateUser = async function () {
-    return await createUser({ email: email, password: password }, props.listenersCallback);
+    return await createUser({ email: email.toLowerCase().trim(), password: password.trim() }, props.listenersCallback);
   }
 
   const handleSignInUser = async function () {
-    return await signInUser({ email: email, password: password }, props.listenersCallback);
+    return await signInUser({ email: email.toLowerCase().trim(), password: password.trim() }, props.listenersCallback);
   }
 
   return (
