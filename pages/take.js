@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
-import { getCurrentUser, updateObject, uploadPhotos } from './firebase-files/firebase';
 import { Camera, CameraType } from 'expo-camera';
-import { styles } from './styles';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
+import { getCurrentUser, updateObject, uploadPhotos } from '../firebase-files/firebase';
+import { styles } from '../styles';
 
 export default function Take(props) {
     const [hasPermission, setHasPermission] = useState(null);

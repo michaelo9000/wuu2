@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Image, useWindowDimen
 import { getEqualTo, signOut as firebaseSignOut } from './firebase-files/firebase';
 import firebaseArrayConvert from './firebase-files/firebaseArrayConvert';
 import { styles } from './styles';
-import Take from './take';
-import Gate from './gate';
-import Mates from './mates';
-import Requests from './requests';
-import Nav from './nav';
+import Take from './pages/take';
+import Gate from './pages/gate';
+import Mates from './pages/mates';
+import Requests from './pages/requests';
+import Nav from './components/nav';
 
 export default function App() {
   const [authUser, setAuthUser] = useState({});

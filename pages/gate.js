@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button } from 'react-native';
-import { createUser, signInUser } from './firebase-files/firebase';
-import useInput from './components/Input';
-import { styles } from './styles';
+import { createUser, signInUser } from '../firebase-files/firebase';
+import useInput from '../components/Input';
+import { styles } from '../styles';
 
 export default function Gate(props) {
   const [email, emailInput] = useInput({ humanName: 'email' });

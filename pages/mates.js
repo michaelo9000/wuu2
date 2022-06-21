@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, Text, View, Button, TouchableOpacity, Image } from 'react-native';
-import { createObject, stringSearch } from './firebase-files/firebase';
-import { styles } from './styles';
-import firebaseArrayConvert from './firebase-files/firebaseArrayConvert';
+import { createObject, stringSearch } from '../firebase-files/firebase';
+import firebaseArrayConvert from '../firebase-files/firebaseArrayConvert';
+import { styles } from '../styles';
 
 export default function Mates(props) {
   const [searchResults, setSearchResults] = useState([]);
