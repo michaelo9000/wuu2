@@ -45,10 +45,6 @@ function constructErrorResult(error) {
     }
 }
 
-export const getCurrentUser = async function () {
-    return await firebase.auth().currentUser;
-}
-
 export const createUser = async function (credentials, listenersCallback) {
     return createUserPromise(
         firebase.auth().createUserWithEmailAndPassword(credentials.email, credentials.password)
@@ -196,6 +192,7 @@ const getImageUrl = function (name) {
         + name.replace('/', '%2F')
         + '?alt=media';
 }
+
 
 const blobify = function (uri) {
     return new Promise((resolve, reject) => {

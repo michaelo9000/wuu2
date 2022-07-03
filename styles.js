@@ -1,10 +1,26 @@
 const navHeight = 60;
-const width = 414;
+const widthPx = 414;
+const padding = 9;
+const borderRadius = 2;
+
+const width = {
+    width: widthPx,
+    maxWidth: '100%'
+}
+
 const flexCenter = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 }
+
+const flexRow = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+}
+
 const fill = {
     position: 'absolute',
     top: 0,
@@ -13,32 +29,68 @@ const fill = {
     right: 0
 }
 
+const colors = {
+    primary: '#9B00CE',
+    secondary: '#CE009A',
+    callout: '#CE9B00',
+    primaryDark: '#802ad9',
+    primaryLight: '#a32ad9',
+    complementAlert: '#DF0037',
+    complementOk: '#A6DF00',
+    white: 'white',
+    gray: 'lightgray',
+    black: 'black'
+}
+
 const input = {
-    width: width * .8,
+    ...width,
     height: 35,
     marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 2
+    borderRadius: borderRadius
 }
 
 export const styles = {
+    // Basic styles
+    width: width,
+    flexRow: flexRow,
+
+    // Main container styles
     app: {
         ...flexCenter,
         ...fill,
-        backgroundColor: '#eee'
+        backgroundColor: colors.primary,
+
     },
     page: {
         ...flexCenter,
         ...fill,
         bottom: navHeight,
+        padding: 30
     },
+
+    // Form styles
+    buttonColor: colors.secondary,
+
     input: {
         ...input
     },
     textInput: {
         ...input,
-        padding: 9
+        padding: padding
     },
+    lookALink: {
+        fontSize: 14,
+        color: colors.white,
+        margin: 'auto',
+        padding: padding
+    },
+    alert: {
+        ...input,
+        ...flexCenter
+    },
+
+    // Nav styles
     nav: {
         position: 'absolute',
         bottom: 0,
@@ -51,14 +103,35 @@ export const styles = {
         alignItems: 'flex-end'
     },
     navItem: {
-        width: 100,
+        ...flexCenter,
+        ...width,
         height: navHeight,
-        backgroundColor: 'lightblue'
+        backgroundColor: colors.secondary
     },
+
+    // Mates styles
+    mate: {
+        ...flexRow,
+        ...input,
+        paddingLeft: padding
+    },
+    mateButton: {
+        ...flexCenter,
+        width: '50%',
+        height: '100%',
+        borderRadius: borderRadius
+    },
+    mateButtonContainer: {
+        ...flexRow,
+        width: '50%',
+        height: '100%',
+    },
+
+    // Requests styles
     receivedRequest: {
         ...input,
         ...flexCenter,
-        backgroundColor: 'pink',
+        backgroundColor: colors.complementAlert,
         height: 50
     },
     sentRequest: {
@@ -66,17 +139,33 @@ export const styles = {
         ...flexCenter,
         height: 50
     },
-    requestPending: {
-        backgroundColor: 'salmon',
+    requestwaiting: {
+        backgroundColor: colors.complementAlert,
         fontStyle: 'italic'
     },
-    requestNew: {
-        backgroundColor: 'lightblue',
+    requestview: {
+        backgroundColor: colors.complementOk,
         fontWeight: 'bold'
     },
-    requestSeen: {
-        backgroundColor: 'lightgrey'
+    requestwuu2: {
+        backgroundColor: colors.callout
     },
+    requestnothin: {
+        backgroundColor: colors.gray,
+        fontStyle: 'italic'
+    },
+    requestseen: {
+        backgroundColor: colors.gray,
+    },
+    requestrespond: {
+        backgroundColor: colors.complementOk,
+        fontWeight: 'bold'
+    },
+    requestreplied: {
+        backgroundColor: colors.callout
+    },
+
+    // Camera stuff
     backPhoto: {
         ...fill,
     },

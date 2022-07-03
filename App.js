@@ -1,41 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
-import { getEqualTo, signOut as firebaseSignOut } from './firebase-files/firebase';
+import { Text, View, Image, useWindowDimensions } from 'react-native';
+
+import { getEqualTo, signInUser } from './firebase-files/firebase';
 import firebaseArrayConvert from './firebase-files/firebaseArrayConvert';
+import { retrieveUserCredentials, storeUserCredentials } from './crypto';
+
 import { styles } from './styles';
-import Take from './pages/take';
 import Gate from './pages/gate';
 import Mates from './pages/mates';
-import Requests from './pages/requests';
+import Take from './pages/take';
+import See from './pages/view';
 import Nav from './components/nav';
 
 export default function App() {
   const [authUser, setAuthUser] = useState({});
   const [userLoaded, setUserLoaded] = useState();
+  const [signingIn, setSigningIn] = useState();
   const [mates, setMates] = useState([]);
   const [sentRequests, setSentRequests] = useState([]);
   const [receivedRequests, setReceivedRequests] = useState([]);
   const [requestTaking, setTakingRequest] = useState();
   const [requestViewing, setViewingRequest] = useState();
   const [page, setPage] = useState('mates');
-  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     (async () => {
-      // Currently gets the wrong type of user - need to store userDetails in cookies really.
-      // if (!authUser.userId) {
-      //   let currentUser = await getCurrentUser() || {};
-      //   setAuthUser(currentUser);
-      // }
+      if (!authUser.userId) {
+        let userCreds = await retrieveUserCredentials();
+        if (userCreds.email) {
+          setSigningIn(true);
+          let result = await signInUser({ email: userCreds.email.toLowerCase().trim(), password: userCreds.password.trim() }, listenersHandler);
+          if (result.isSuccess) {
+            handleSignIn(result);
+          }
+          else {
+            handleError(result.error);
+          }
+          setSigningIn(false);
+        }
+      }
     })();
   }, []);
 
   const handleSignOut = function () {
-    firebaseSignOut();
+
   }
 
-  const handleSignIn = function (userData) {
+  const handleSignIn = async function (userData) {
     let { data, ...userProfile } = userData;
+    console.log(userData);
+    storeUserCredentials(userData);
     setAuthUser(userProfile);
     setMates(data.mates);
     setSentRequests(data.sentRequests);
@@ -71,36 +85,32 @@ export default function App() {
     setPage('view');
   }
 
-  console.log(authUser);
-
   return <View style={styles.app}>
     {!authUser.userId &&
-      <Gate isSignIn={true} handleError={e => alert(e)} handleSignIn={handleSignIn} listenersCallback={listenersHandler} />
+      (signingIn ?
+        <Text>signing in...</Text>
+        :
+        <Gate handleError={e => alert(e)} handleSignIn={handleSignIn} listenersCallback={listenersHandler} />
+      )
     }
     {userLoaded &&
       <View style={styles.app}>
         <Nav setPage={setPage} />
-        {page == 'requests' &&
-          <Requests sentRequests={firebaseArrayConvert(sentRequests)} receivedRequests={firebaseArrayConvert(receivedRequests)}
-            takePhotos={takePhotos} viewPhotos={viewPhotos} user={authUser} />
-        }
         {page == 'mates' &&
-          <Mates mates={firebaseArrayConvert(mates)} user={authUser} />
+          <Mates
+            user={authUser}
+            mates={firebaseArrayConvert(mates)}
+            sentRequests={firebaseArrayConvert(sentRequests)}
+            receivedRequests={firebaseArrayConvert(receivedRequests)}
+            takePhotos={takePhotos}
+            viewPhotos={viewPhotos}
+          />
         }
         {page == 'take' &&
           <Take request={requestTaking} user={authUser} setPage={setPage} />
         }
         {page == 'view' &&
-          <View style={styles.page}>
-            <Image
-              style={styles.backPhoto}
-              source={{ uri: requestViewing.backUrl }}
-            />
-            <Image
-              style={{ width: width * .4, height: width * .5, left: width * .5, top: width * .2, position: 'absolute' }}
-              source={{ uri: requestViewing.frontUrl }}
-            />
-          </View>
+          <See req={requestViewing} />
         }
       </View>
     }

@@ -7,10 +7,7 @@ export default function Nav(props) {
     return (
         <View style={styles.nav}>
             <TouchableOpacity onPress={() => props.setPage('mates')} style={styles.navItem}>
-                <Text>Mates</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => props.setPage('requests')} style={styles.navItem}>
-                <Text>Requests</Text>
+                <Text>home</Text>
             </TouchableOpacity>
         </View>
     );

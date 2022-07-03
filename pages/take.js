@@ -10,10 +10,8 @@ export default function Take(props) {
     const [cameraReady, setCameraReady] = useState(false);
     const [camera, assignCamera] = useState();
     const [takingPhoto, setTakingPhoto] = useState(false);
-    const [frontPhoto, setFrontPhoto] = useState({});
-    const [backPhoto, setBackPhoto] = useState({});
+    const [tookPhoto, setTookPhoto] = useState(false);
     const [sent, setSent] = useState();
-    const { height, width } = useWindowDimensions();
 
     useEffect(() => {
         (async () => {
@@ -47,7 +45,6 @@ export default function Take(props) {
             catch (e) {
                 alert(e);
             }
-            setBackPhoto(backPhoto);
 
             setType(CameraType.front);
 
@@ -58,18 +55,21 @@ export default function Take(props) {
                 catch (e) {
                     alert(e);
                 }
-                setFrontPhoto(frontPhoto);
 
                 setTakingPhoto(false);
-            }, 200);
-        }, 200);
+                setTookPhoto(true);
+
+                await sendPhotos(frontPhoto, backPhoto);
+            }, 500);
+        }, 500);
     }
 
-    const sendPhotos = async () => {
+    const sendPhotos = async (frontPhoto, backPhoto) => {
+        console.log(frontPhoto);
         var urls = await uploadPhotos(frontPhoto.uri, backPhoto.uri, props.user.key, props.request.key);
         updateObject('requests', { ...props.request, frontUrl: urls.front, backUrl: urls.back });
         setSent(true);
-        setTimeout(() => props.setPage('requests'), 1500);
+        setTimeout(() => props.setPage('mates'), 1500);
     }
 
     return (
@@ -80,25 +80,12 @@ export default function Take(props) {
                     <Text>Flip</Text>
                 </Camera>
             </View>
-            {/* Back photo has to be first so that front photo gets rendered on top. */}
-            {backPhoto.uri &&
-                <Image
-                    style={{ ...styles.backPhoto, width: width, height: height }}
-                    source={{ uri: backPhoto.uri, width: backPhoto.width, height: backPhoto.height }}
-                />
-            }
-            {frontPhoto.uri &&
-                <Image
-                    style={{ width: width * .4, height: width * .5, left: width * .5, top: width * .2, position: 'absolute' }}
-                    source={{ uri: frontPhoto.uri, width: frontPhoto.width, height: frontPhoto.height }}
-                />
-            }
-            {frontPhoto.uri && backPhoto.uri &&
-                <View style={styles.input} >
-                    <Button onPress={sendPhotos} title={sent ? 'sent!' : 'send'} disabled={takingPhoto || sent} />
+            {sent &&
+                <View style={styles.alert} >
+                    <Text>Sent!</Text>
                 </View>
             }
-            {!backPhoto.uri &&
+            {!tookPhoto &&
                 <View style={styles.input} >
                     <Button onPress={takePhotos} title="take photos" disabled={!cameraReady || takingPhoto} />
                 </View>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, TouchableOpacity, Text } from 'react-native';
 import { createUser, signInUser } from '../firebase-files/firebase';
 import useInput from '../components/Input';
 import { styles } from '../styles';
@@ -7,10 +7,11 @@ import { styles } from '../styles';
 export default function Gate(props) {
   const [email, emailInput] = useInput({ humanName: 'email' });
   const [password, passwordInput] = useInput({ humanName: 'password' });
+  const [isSignIn, setIsSignIn] = useState([]);
 
   const submit = async function () {
 
-    let userFunction = props.isSignIn ? handleSignInUser : handleCreateUser;
+    let userFunction = isSignIn ? handleSignInUser : handleCreateUser;
     let result = await userFunction();
 
     if (result.isSuccess) {
@@ -36,7 +37,10 @@ export default function Gate(props) {
       {/* todo make button component so i can style them all the same */}
       {/* buttons need to be contained to be sized?? */}
       <View style={styles.input} >
-        <Button onPress={submit} title={props.isSignIn ? 'sign in' : 'create account'} />
+        <Button color={styles.buttonColor} onPress={submit} title={isSignIn ? 'sign in' : 'create account'} />
+        <TouchableOpacity onPress={() => setIsSignIn(!isSignIn)}>
+          <Text style={styles.lookALink}>{isSignIn ? 'create account' : 'sign in'}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
