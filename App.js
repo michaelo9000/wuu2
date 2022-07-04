@@ -34,7 +34,7 @@ export default function App() {
             handleSignIn(result);
           }
           else {
-            handleError(result.error);
+            alert(result.error);
           }
           setSigningIn(false);
         }
@@ -43,7 +43,14 @@ export default function App() {
   }, []);
 
   const handleSignOut = function () {
-
+    storeUserCredentials({});
+    setAuthUser({});
+    setMates([]);
+    setSentRequests([]);
+    setReceivedRequests([]);
+    setTakingRequest();
+    setViewingRequest();
+    setUserLoaded(false);
   }
 
   const handleSignIn = async function (userData) {
@@ -88,14 +95,14 @@ export default function App() {
   return <View style={styles.app}>
     {!authUser.userId &&
       (signingIn ?
-        <Text>signing in...</Text>
+        <Image style={styles.icon} source={require('./assets/dot-3.svg')} />
         :
         <Gate handleError={e => alert(e)} handleSignIn={handleSignIn} listenersCallback={listenersHandler} />
       )
     }
     {userLoaded &&
       <View style={styles.app}>
-        <Nav setPage={setPage} />
+        <Nav setPage={setPage} signOut={handleSignOut} />
         {page == 'mates' &&
           <Mates
             user={authUser}

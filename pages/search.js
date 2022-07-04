@@ -35,11 +35,11 @@ export default function Search(props) {
 
     return (
         <View style={styles.width}>
-            <TextInput style={styles.textInput} onChangeText={handleSearch} placeholder="start typing your mate's email" />
+            <TextInput style={styles.textInput} onChangeText={handleSearch} placeholder="search by email" />
             {searchResults.map(r => <View key={r.key} style={styles.mate}>
                 <Text style={{ width: '75%' }}>{r.email}</Text>
-                <TouchableOpacity style={{ ...styles.mateButton, ...styles[`requestwaiting`], width: '25%' }} onPress={() => addMate(r.userId)} >
-                    <Text>ADD</Text>
+                <TouchableOpacity style={{ ...styles.mateButton, ...styles[`requestwaiting`] }} onPress={() => addMate(r.userId)} >
+                    <Image style={styles.iconSmall} source={require('../assets/plus-circled.svg')} />
                 </TouchableOpacity>
             </View>
             )}

@@ -1,7 +1,9 @@
-const navHeight = 60;
 const widthPx = 414;
 const padding = 9;
+const doublePadding = 9 * 2;
 const borderRadius = 2;
+const height = 35;
+const navHeight = height + doublePadding * 2;
 
 const width = {
     width: widthPx,
@@ -30,22 +32,23 @@ const fill = {
 }
 
 const colors = {
-    primary: '#9B00CE',
-    secondary: '#CE009A',
-    callout: '#CE9B00',
-    primaryDark: '#802ad9',
-    primaryLight: '#a32ad9',
-    complementAlert: '#DF0037',
-    complementOk: '#A6DF00',
-    white: 'white',
-    gray: 'lightgray',
-    black: 'black'
+    stasis: '#AD2017',
+    anticipation: '#243B68',
+    alert: '#D06C75',
+    empty: '#251111',
+
+    body: '#121923',
+    secondary: '#AD2017',
+    accent: '#FF999B',
+    text: '#FFFFFF',
+
+    white: '#FFFFFF'
 }
 
 const input = {
     ...width,
-    height: 35,
-    marginBottom: 10,
+    height: height,
+    marginBottom: padding,
     backgroundColor: 'white',
     borderRadius: borderRadius
 }
@@ -54,23 +57,25 @@ export const styles = {
     // Basic styles
     width: width,
     flexRow: flexRow,
+    flexCenter: flexCenter,
 
     // Main container styles
     app: {
         ...flexCenter,
         ...fill,
-        backgroundColor: colors.primary,
-
+        backgroundColor: colors.body,
+        color: colors.text
     },
     page: {
         ...flexCenter,
         ...fill,
         bottom: navHeight,
-        padding: 30
+        padding: doublePadding
     },
 
     // Form styles
     buttonColor: colors.secondary,
+    text: { color: colors.text },
 
     input: {
         ...input
@@ -81,7 +86,7 @@ export const styles = {
     },
     lookALink: {
         fontSize: 14,
-        color: colors.white,
+        color: colors.text,
         margin: 'auto',
         padding: padding
     },
@@ -90,7 +95,18 @@ export const styles = {
         ...flexCenter
     },
 
+    icon: {
+        height: height - padding,
+        width: height - padding,
+    },
+
+    iconSmall: {
+        height: height - doublePadding,
+        width: height - doublePadding,
+    },
+
     // Nav styles
+    navHeight: navHeight,
     nav: {
         position: 'absolute',
         bottom: 0,
@@ -100,13 +116,20 @@ export const styles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems: 'flex-end'
+        alignItems: 'center',
+    },
+    navItemContainer: {
+        ...flexCenter,
+        height: navHeight - padding,
+        borderRadius: (navHeight - padding) / 2,
+        backgroundColor: colors.white
     },
     navItem: {
         ...flexCenter,
-        ...width,
-        height: navHeight,
-        backgroundColor: colors.secondary
+        width: navHeight - doublePadding,
+        height: navHeight - doublePadding,
+        borderRadius: (navHeight - doublePadding) / 2,
+        backgroundColor: colors.secondary,
     },
 
     // Mates styles
@@ -115,54 +138,46 @@ export const styles = {
         ...input,
         paddingLeft: padding
     },
-    mateButton: {
-        ...flexCenter,
-        width: '50%',
-        height: '100%',
-        borderRadius: borderRadius
-    },
     mateButtonContainer: {
         ...flexRow,
-        width: '50%',
+        width: height * 2.6,
+        height: '100%',
+        borderRadius: borderRadius,
+    },
+    mateButton: {
+        ...flexCenter,
+        width: height * 1.3,
         height: '100%',
     },
 
-    // Requests styles
-    receivedRequest: {
-        ...input,
-        ...flexCenter,
-        backgroundColor: colors.complementAlert,
-        height: 50
-    },
-    sentRequest: {
-        ...input,
-        ...flexCenter,
-        height: 50
-    },
+    // Sent requests
     requestwaiting: {
-        backgroundColor: colors.complementAlert,
-        fontStyle: 'italic'
+        backgroundColor: colors.anticipation,
+        borderTopRightRadius: borderRadius,
+        borderBottomRightRadius: borderRadius,
     },
     requestview: {
-        backgroundColor: colors.complementOk,
-        fontWeight: 'bold'
+        backgroundColor: colors.alert,
+        borderTopRightRadius: borderRadius,
+        borderBottomRightRadius: borderRadius,
     },
     requestwuu2: {
-        backgroundColor: colors.callout
+        backgroundColor: colors.stasis,
+        borderTopRightRadius: borderRadius,
+        borderBottomRightRadius: borderRadius,
     },
-    requestnothin: {
-        backgroundColor: colors.gray,
-        fontStyle: 'italic'
+    // Received requests
+    requestempty: {
+        backgroundColor: colors.white,
     },
     requestseen: {
-        backgroundColor: colors.gray,
+        backgroundColor: colors.empty,
     },
     requestrespond: {
-        backgroundColor: colors.complementOk,
-        fontWeight: 'bold'
+        backgroundColor: colors.alert,
     },
     requestreplied: {
-        backgroundColor: colors.callout
+        backgroundColor: colors.anticipation,
     },
 
     // Camera stuff
@@ -172,6 +187,12 @@ export const styles = {
     // Get this shit off the screen.
     camera: {
         position: 'absolute',
+        // Magic number alert
         top: -100
+    },
+    takeButton: {
+        position: 'absolute',
+        backgroundColor: colors.secondary,
+        ...flexCenter
     }
 }

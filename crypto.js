@@ -8,8 +8,8 @@ export const hashAndStorePassword = async function (password) {
 }
 
 export const storeUserCredentials = async function (userData) {
-    await AsyncStorage.setItem('@userEmail', userData.email);
-    await AsyncStorage.setItem('@userPassword', userData.password);
+    await AsyncStorage.setItem('@userEmail', userData.email || '');
+    await AsyncStorage.setItem('@userPassword', userData.password || '');
 }
 
 export const retrieveUserCredentials = async function () {

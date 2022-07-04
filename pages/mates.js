@@ -43,6 +43,42 @@ export default function Mates(props) {
 
 function MateDisplay(props) {
   const mate = props.mate;
+  const wuu2 = require(`../assets/plane-outgoing.svg`);
+  const reply = require(`../assets/reply.svg`);
+  const incoming = require(`../assets/plane-incoming.svg`);
+  const eye = require(`../assets/eye.svg`);
+
+  const getIcon = function (status) {
+    switch (status) {
+      case "wuu2":
+        return wuu2;
+      case "waiting":
+      case "replied":
+        return reply;
+      case "view":
+      case "respond":
+        return incoming;
+      case "seen":
+      default:
+        return eye;
+    }
+  }
+
+  const handlePressRespond = function (status) {
+    if (status == "empty" || status == "replied")
+      return;
+    if (status == "respond")
+      props.takePhotos(props.receivedRequest);
+  }
+
+  if (!props.receivedRequest)
+    var receivedStatus = "empty";
+  else if (props.receivedRequest && !props.receivedRequest.backUrl)
+    var receivedStatus = "respond";
+  else if (props.receivedRequest && props.receivedRequest.seen)
+    var receivedStatus = "seen";
+  else
+    var receivedStatus = "replied";
 
   const handlePressSend = function (status) {
     if (status == "waiting")
@@ -62,30 +98,14 @@ function MateDisplay(props) {
   else
     var sentStatus = "view";
 
-  const handlePressRespond = function (status) {
-    if (status == "nothin" || status == "replied")
-      return;
-    if (status == "respond")
-      props.takePhotos(props.receivedRequest);
-  }
-
-  if (!props.receivedRequest)
-    var receivedStatus = "nothin";
-  else if (props.receivedRequest && !props.receivedRequest.backUrl)
-    var receivedStatus = "respond";
-  else if (props.receivedRequest && props.receivedRequest.seen)
-    var receivedStatus = "seen";
-  else
-    var receivedStatus = "replied";
-
   return <View style={styles.mate}>
-    <Text style={{ width: '50%' }}>{mate.email}</Text>
+    <Text >{mate.email}</Text>
     <View style={styles.mateButtonContainer}>
-      <TouchableOpacity style={{ ...styles.mateButton, ...styles[`request${receivedStatus}`] }} onPress={() => handlePressRespond(receivedStatus)}>
-        <Text style={styles[`request${receivedStatus}`]}>{receivedStatus}</Text>
+      <TouchableOpacity style={{ ...styles.mateButton, ...styles[`request${receivedStatus}`] }} onPress={() => handlePressRespond(receivedStatus)} disabled={receivedStatus != "respond"}>
+        <Image style={styles.iconSmall} source={getIcon(receivedStatus)} />
       </TouchableOpacity>
-      <TouchableOpacity style={{ ...styles.mateButton, ...styles[`request${sentStatus}`] }} onPress={() => handlePressSend(sentStatus)}>
-        <Text style={styles[`request${sentStatus}`]}>{sentStatus}</Text>
+      <TouchableOpacity style={{ ...styles.mateButton, ...styles[`request${sentStatus}`] }} onPress={() => handlePressSend(sentStatus)} disabled={sentStatus == "waiting"}>
+        <Image style={styles.iconSmall} source={getIcon(sentStatus)} />
       </TouchableOpacity>
     </View>
   </View>

@@ -12,6 +12,7 @@ export default function Take(props) {
     const [takingPhoto, setTakingPhoto] = useState(false);
     const [tookPhoto, setTookPhoto] = useState(false);
     const [sent, setSent] = useState();
+    const { height, width } = useWindowDimensions();
 
     useEffect(() => {
         (async () => {
@@ -24,10 +25,10 @@ export default function Take(props) {
     }, []);
 
     if (hasPermission === null) {
-        return <Text>NULL permissions for camera</Text>;
+        return <Text style={styles.text}>NULL permissions for camera</Text>;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <Text style={styles.text}>No access to camera</Text>;
     }
 
     const takePhotos = async () => {
@@ -72,6 +73,9 @@ export default function Take(props) {
         setTimeout(() => props.setPage('mates'), 1500);
     }
 
+    const dots = require(`../assets/dot-3.svg`);
+    const aperture = require(`../assets/aperture.svg`);
+
     return (
         <View style={styles.page}>
             <View style={styles.camera}>
@@ -81,14 +85,24 @@ export default function Take(props) {
                 </Camera>
             </View>
             {sent &&
-                <View style={styles.alert} >
-                    <Text>Sent!</Text>
-                </View>
+                <Image style={styles.icon} source={require('../assets/plane-outgoing.svg')} />
             }
             {!tookPhoto &&
-                <View style={styles.input} >
-                    <Button onPress={takePhotos} title="take photos" disabled={!cameraReady || takingPhoto} />
-                </View>
+                <TouchableOpacity
+                    // What a mess.
+                    style={{
+                        ...styles.takeButton,
+                        width: width * .7,
+                        height: width * .7,
+                        borderRadius: width * .35,
+                        top: (height - styles.navHeight - width * .7) / 2,
+                        left: width * .15
+                    }}
+                    onPress={takePhotos}
+                    disabled={!cameraReady || takingPhoto}
+                >
+                    <Image style={styles.icon} source={takingPhoto ? dots : aperture} />
+                </TouchableOpacity>
             }
         </View>
     );
